@@ -48,14 +48,14 @@ pipeline{
         stage("register Task defintion"){
             steps{
                 script {
-                    sh "aws ecs register-task-definition --cli-input-json file://task.json"
+                    sh "aws ecs register-task-definition --cli-input-json file://task.json.${IMAGE_TAG}"
                 }
             }
         }     
         stage("Update service"){
             steps{
                 script {
-                    sh "aws ecs update-service --cluster abdullah-jenkins-fargate --service ${service_name} --task-definition abdullah-jenkins-ecs-app --desired-count 2"
+                    sh "aws ecs update-service --cluster abdullah-jenkins-fargate --service ${service_name} --task-definition task.json.${IMAGE_TAG} --desired-count 2"
                 }
             }
         }                     
