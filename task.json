@@ -1,6 +1,4 @@
 {
-    "ipcMode": null,
-    "executionRoleArn": "arn:aws:iam::489994096722:role/ecsTaskExecutionRole",
     "containerDefinitions": [
         {
             "dnsSearchDomains": null,
@@ -52,7 +50,6 @@
         }
     ],
     "memory": "1024",
-    "taskRoleArn": "arn:aws:iam::489994096722:role/ecsTaskExecutionRole",
     "family": "abdullah-jenkins-ecs-app",
     "pidMode": null,
     "requiresCompatibilities": [
