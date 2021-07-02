@@ -55,7 +55,7 @@ pipeline{
         stage("Update service"){
             steps{
                 script {
-                    sh "aws ecs update-service --cluster abdullah-jenkins-fargate --service ${service_name} --task-definition task --desired-count 2"
+                    sh "aws ecs update-service --cluster abdullah-jenkins-fargate --service ${service_name} --task-definition task --desired-count 1"
                 }
             }
         }                     
