@@ -63,7 +63,7 @@ pipeline{
         stage("Deploy service"){
             steps{
                 script {
-                    sh "deploy --service app --task-definition abdullah-jenkins-ecs-app"       
+                    sh "ecs-deploy --service app --task-definition abdullah-jenkins-ecs-app"       
                 }
             }
         }               
