@@ -1,6 +1,6 @@
-def app = 'Unknown'
 pipeline{
     agent any
+    def app = 'Unknown'
     environment {
     registry = '489994096722.dkr.ecr.us-east-2.amazonaws.com/abdullah_jenkins_ecr'
     // registryCredential = 'ecr:us-east-2'
@@ -52,20 +52,12 @@ pipeline{
                 }
             }
         }     
-        stage("Create service"){
+        stage("Update service"){
             steps{
                 script {
-                    // aws ecs update-service --service my-http-service --task-definition amazon-ecs-sample
-                    sh "aws ecs create-service --cluster abdullah-jenkins-fargate --service-name ${service_name} --task-definition abdullah-jenkins-ecs-app --desired-count 1  --launch-type 'FARGATE' --platform-version 'LATEST' --network-configuration 'awsvpcConfiguration={subnets=[${Public_Subnet_1},${Public_Subnet_2}],securityGroups=[sg-0fe33bb1bc74e8fa9],assignPublicIp=ENABLED}' "
+                    sh "aws ecs update-service --service ${service_name} --task-definition abdullah-jenkins-ecs-app"
                 }
             }
-        }     
-        stage("Deploy service"){
-            steps{
-                script {
-                    sh "ecs-deploy --service app --task-definition abdullah-jenkins-ecs-app"       
-                }
-            }
-        }               
+        }                     
     }
 }  
