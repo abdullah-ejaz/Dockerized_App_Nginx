@@ -11,6 +11,7 @@ pipeline{
     REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"   
     Public_Subnet_2 = "subnet-09c93874"
     Public_Subnet_1 = "subnet-eaa81381"
+    service_name = "appinservice"
              }    
     stages{   
         stage("Build image"){
@@ -54,7 +55,8 @@ pipeline{
         stage("Create service"){
             steps{
                 script {
-                    sh "aws ecs create-service --cluster abdullah-jenkins-fargate --service-name app --task-definition abdullah-jenkins-ecs-app --desired-count 1  --launch-type 'FARGATE' --platform-version 'LATEST' --network-configuration 'awsvpcConfiguration={subnets=[${Public_Subnet_1},${Public_Subnet_2}],securityGroups=[sg-0fe33bb1bc74e8fa9],assignPublicIp=ENABLED}' "
+                    aws ecs update-service --service my-http-service --task-definition amazon-ecs-sample
+                    sh "aws ecs create-service --cluster abdullah-jenkins-fargate --service-name ${service_name} --task-definition abdullah-jenkins-ecs-app --desired-count 1  --launch-type 'FARGATE' --platform-version 'LATEST' --network-configuration 'awsvpcConfiguration={subnets=[${Public_Subnet_1},${Public_Subnet_2}],securityGroups=[sg-0fe33bb1bc74e8fa9],assignPublicIp=ENABLED}' "
                 }
             }
         }     
