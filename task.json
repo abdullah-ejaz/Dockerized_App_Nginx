@@ -16,7 +16,7 @@
         }
     ],
     "memory": "1024",
-    "family": "abdullah-jenkins-ecs-app",
+    "family": "task",
     "requiresCompatibilities": [
         "FARGATE"
     ],
