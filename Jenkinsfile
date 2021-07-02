@@ -7,10 +7,10 @@ pipeline{
     AWS_DEFAULT_REGION = 'us-east-2'
     AWS_ACCOUNT_ID="489994096722"
     IMAGE_REPO_NAME="abdullah_jenkins_ecr"
-    IMAGE_TAG="abdullah-sample-pythonapp"
+    IMAGE_TAG="abdullah-sample-app"
     REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"    
              }    
-    stages{  
+    stages{   
         stage("Build image"){
             steps{
                 script {
@@ -47,13 +47,6 @@ pipeline{
                     // }
                 }
             }
-        }   
-        stage("Push image"){
-            steps{
-                script {
-    sh "aws ecs create-service --cluster abdullah-jenkins-fargate --service-name --task-definition  --desired-count 1  --launch-type 'FARGATE' --platform-version 'LATEST' --network-configuration 'awsvpcConfiguration={subnets=[],securityGroups=[],assignPublicIp=ENABLED}' "
-                }
-            }
-        }              
+        }
     }
 }  
