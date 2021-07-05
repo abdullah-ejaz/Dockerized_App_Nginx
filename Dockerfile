@@ -1,5 +1,5 @@
 #
-# BudgetTracker Dockerfile for UI
+# BudgetTracker Dockerfile for UI 
 #
 FROM ubuntu:latest
 MAINTAINER "abdullah@gmail.com"
