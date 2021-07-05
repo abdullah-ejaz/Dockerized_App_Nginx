@@ -47,7 +47,7 @@ pipeline{
         stage("register Task defintion"){
             steps{
                 script {
-                    sh "sed -e "s;%BUILD_ID%;${BUILD_ID};g" flask-signup.json > flask-signup-v_${BUILD_ID}.json"
+                    sh "sed -e ":s;%BUILD_ID%;${BUILD_ID};g" flask-signup.json > flask-signup-v_${BUILD_ID}.json"
                     sh "aws ecs register-task-definition --cli-input-json file://task-v_${BUILD_ID}.json"
                 }
             }
