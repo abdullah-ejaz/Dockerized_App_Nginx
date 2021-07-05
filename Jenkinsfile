@@ -2,8 +2,6 @@ def app = 'Unknown'
 pipeline{
     agent any
     environment {
-    // registry = '489994096722.dkr.ecr.us-east-2.amazonaws.com/abdullah_jenkins_ecr'
-    // registryCredential = 'ecr:us-east-2'
     AWS_DEFAULT_REGION = 'us-east-2'
     AWS_ACCOUNT_ID="489994096722"
     IMAGE_REPO_NAME="abdullah_jenkins_ecr"
@@ -11,7 +9,11 @@ pipeline{
     REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"   
     Public_Subnet_2 = "subnet-09c93874"
     Public_Subnet_1 = "subnet-eaa81381"
-    service_name = "appinservice"
+    // service_name = "appinservice"
+    parameters {
+        string(name: 'ENVIRONMENT', defaultValue: 'DEV', description: 'Where should I deploy?')
+        choice(name: 'service_name', choices: ['appinservice', 'pythonapp'], description: 'Pick Service to Deploy')
+    }    
     TASK_FAMILY="task"
     }    
     stages{  
@@ -30,6 +32,10 @@ pipeline{
             }   
         }
         stage("Test image"){
+            when {
+                expression { 
+                    return params.ENVIRONMENT == 'DEV'
+                }            
             steps{
                 script {
                     app.inside {            
@@ -58,7 +64,7 @@ pipeline{
         stage("Update service"){
             steps{
                 script {
-                    sh "aws ecs update-service --cluster abdullah-jenkins-fargate --service ${service_name} --task-definition task --desired-count 1"
+                    sh "aws ecs update-service --cluster abdullah-jenkins-fargate --service ${params.service_name} --task-definition task --desired-count 1"
                 }
             }
         }                     
