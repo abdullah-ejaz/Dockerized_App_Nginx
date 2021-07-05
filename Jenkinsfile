@@ -35,7 +35,8 @@ pipeline{
             when {
                 expression { 
                     return params.ENVIRONMENT == 'DEV'
-                }            
+                }
+            }            
             steps{
                 script {
                     app.inside {            
