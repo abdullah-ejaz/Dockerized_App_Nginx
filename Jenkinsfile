@@ -9,13 +9,13 @@ pipeline{
     REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"   
     Public_Subnet_2 = "subnet-09c93874"
     Public_Subnet_1 = "subnet-eaa81381"
-    // service_name = "appinservice"
+    // service_name = "appinservice"   
+    TASK_FAMILY="task"
+    }
     parameters {
         string(name: 'ENVIRONMENT', defaultValue: 'DEV', description: 'Where should I deploy?')
         choice(name: 'service_name', choices: ['appinservice', 'pythonapp'], description: 'Pick Service to Deploy')
-    }    
-    TASK_FAMILY="task"
-    }    
+    }         
     stages{  
         stage('Logging into AWS ECR') {
             steps {
