@@ -51,7 +51,7 @@ pipeline{
                 script {
                     sh "sed -i 's/%BUILD_ID%/${BUILD_ID}/g' task.json"
                     //  sed -i 's/database_name_here/wordpress/g' /var/www/html/wp-config.php
-                    sh "aws ecs register-task-definition --cli-input-json file://task-v_${BUILD_ID}.json"
+                    sh "aws ecs register-task-definition --cli-input-json file://task-.json"
                 }
             }
         }     
