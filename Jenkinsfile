@@ -21,7 +21,7 @@ pipeline{
                 }
             }   
         }
-        stage("Test image"){
+        stage("Test image") {
             steps{
                 script {
                     app.inside {            
