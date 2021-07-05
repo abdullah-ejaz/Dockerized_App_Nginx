@@ -11,6 +11,7 @@ pipeline{
     Public_Subnet_2 = "subnet-09c93874"
     Public_Subnet_1 = "subnet-eaa81381"
     service_name = "appinservice"
+    TASK_FAMILY="task"
     }    
     stages{  
         stage('Logging into AWS ECR') {
@@ -47,7 +48,8 @@ pipeline{
         stage("register Task defintion"){
             steps{
                 script {
-                    sh "sed -e ":s;%BUILD_ID%;${BUILD_ID};g" flask-signup.json > flask-signup-v_${BUILD_ID}.json"
+                    sh "sed -i 's/%BUILD_ID%/${BUILD_ID}/g' task.json > task-v_${BUILD_ID}.json"
+                    //  sed -i 's/database_name_here/wordpress/g' /var/www/html/wp-config.php
                     sh "aws ecs register-task-definition --cli-input-json file://task-v_${BUILD_ID}.json"
                 }
             }
