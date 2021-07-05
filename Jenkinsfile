@@ -7,7 +7,7 @@ pipeline{
     AWS_DEFAULT_REGION = 'us-east-2'
     AWS_ACCOUNT_ID="489994096722"
     IMAGE_REPO_NAME="abdullah_jenkins_ecr"
-    IMAGE_TAG="v_${env.BUILD_ID}"
+    IMAGE_TAG="${env.BUILD_ID}"
     REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"   
     Public_Subnet_2 = "subnet-09c93874"
     Public_Subnet_1 = "subnet-eaa81381"
