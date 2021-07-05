@@ -4,7 +4,7 @@
             "logConfiguration": {
                 "logDriver": "awslogs",
                 "options": {
-                    "awslogs-group": "/ecs/abdullah-jenkins-ecs-app",
+                    "awslogs-group": "/ecs/abdullah-jenkins-ecs-app:tag",
                     "awslogs-region": "us-east-2",
                     "awslogs-stream-prefix": "ecs"
                 }
