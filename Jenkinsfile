@@ -3,14 +3,14 @@ pipeline{
     agent any
     environment {
         IMAGE_TAG="${env.BUILD_ID}"
-        REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"  
+        REPOSITORY_URI = "${params.AWS_ACCOUNT_ID}.dkr.ecr.${params.AWS_DEFAULT_REGION}.amazonaws.com/${params.IMAGE_REPO_NAME}"  
     }
     parameters {
         string(name: 'ENVIRONMENT', defaultValue: 'DEV', description: 'Where should I deploy?')
         string(name: 'service_name', defaultValue: 'appinservice', description: 'Pick Service to Deploy')
-        text(name: 'AWS_DEFAULT_REGION', defaultValue: '', description: 'Enter some information')
-        text(name: 'AWS_ACCOUNT_ID', defaultValue: '', description: 'Enter some information')
-        text(name: 'IMAGE_REPO_NAME', defaultValue: '', description: 'Enter some information')
+        text(name: 'AWS_DEFAULT_REGION', defaultValue: 'us-east-2', description: 'Enter some information')
+        text(name: 'AWS_ACCOUNT_ID', defaultValue: '489994096722', description: 'Enter some information')
+        text(name: 'IMAGE_REPO_NAME', defaultValue: 'abdullah_jenkins_ecr', description: 'Enter some information')
     }         
     stages{  
         stage('Logging into AWS ECR') {
