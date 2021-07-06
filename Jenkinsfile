@@ -2,9 +2,6 @@ def app = 'Unknown'
 pipeline{
     agent any
     environment {
-        // AWS_DEFAULT_REGION = 'us-east-2'
-        // AWS_ACCOUNT_ID="489994096722"
-        IMAGE_REPO_NAME="abdullah_jenkins_ecr"
         IMAGE_TAG="${env.BUILD_ID}"
         REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"  
     }
@@ -13,6 +10,7 @@ pipeline{
         string(name: 'service_name', defaultValue: 'appinservice', description: 'Pick Service to Deploy')
         text(name: 'AWS_DEFAULT_REGION', defaultValue: '', description: 'Enter some information')
         text(name: 'AWS_ACCOUNT_ID', defaultValue: '', description: 'Enter some information')
+        text(name: 'IMAGE_REPO_NAME', defaultValue: '', description: 'Enter some information')
     }         
     stages{  
         stage('Logging into AWS ECR') {
@@ -25,7 +23,7 @@ pipeline{
         stage("Build image"){
             steps{
                 script {
-                    app = docker.build"${IMAGE_REPO_NAME}:${IMAGE_TAG}"
+                    app = docker.build"${params.IMAGE_REPO_NAME}:${IMAGE_TAG}"
                 }
             }   
         }
@@ -46,8 +44,8 @@ pipeline{
         stage("Push image"){
             steps{
                 script {
-                    sh "docker tag ${IMAGE_REPO_NAME}:${IMAGE_TAG} ${REPOSITORY_URI}:$IMAGE_TAG"
-                    sh "docker push ${params.AWS_ACCOUNT_ID}.dkr.ecr.${params.AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:${IMAGE_TAG}"
+                    sh "docker tag ${params.IMAGE_REPO_NAME}:${IMAGE_TAG} ${REPOSITORY_URI}:$IMAGE_TAG"
+                    sh "docker push ${params.AWS_ACCOUNT_ID}.dkr.ecr.${params.AWS_DEFAULT_REGION}.amazonaws.com/${params.IMAGE_REPO_NAME}:${IMAGE_TAG}"
                 }
             }
         }
