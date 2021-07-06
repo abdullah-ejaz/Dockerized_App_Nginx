@@ -3,7 +3,7 @@ pipeline{
     agent any
     environment {
         IMAGE_TAG="${env.BUILD_ID}"
-        REPOSITORY_URI = "${params.AWS_ACCOUNT_ID}.dkr.ecr.${params.AWS_DEFAULT_REGION}.amazonaws.com/${params.IMAGE_REPO_NAME}"  
+        REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"  
     }
     parameters {
         string(name: 'ENVIRONMENT', defaultValue: 'DEV', description: 'Where should I deploy?')
