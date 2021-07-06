@@ -8,9 +8,9 @@ pipeline{
     parameters {
         string(name: 'ENVIRONMENT', defaultValue: 'DEV', description: 'Where should I deploy?')
         string(name: 'service_name', defaultValue: 'appinservice', description: 'Pick Service to Deploy')
-        text(name: 'AWS_DEFAULT_REGION', defaultValue: 'us-east-2', description: 'Enter some information')
-        text(name: 'AWS_ACCOUNT_ID', defaultValue: '489994096722', description: 'Enter some information')
-        text(name: 'IMAGE_REPO_NAME', defaultValue: 'abdullah_jenkins_ecr', description: 'Enter some information')
+        text(name: 'AWS_DEFAULT_REGION', defaultValue: 'us-east-2', description: 'Enter region')
+        text(name: 'AWS_ACCOUNT_ID', defaultValue: '489994096722', description: 'Enter id')
+        text(name: 'IMAGE_REPO_NAME', defaultValue: 'abdullah_jenkins_ecr', description: 'Enter repo')
     }         
     stages{  
         stage('Logging into AWS ECR') {
