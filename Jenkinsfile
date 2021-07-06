@@ -2,19 +2,18 @@ def app = 'Unknown'
 pipeline{
     agent any
     environment {
-    AWS_DEFAULT_REGION = 'us-east-2'
-    AWS_ACCOUNT_ID="489994096722"
-    IMAGE_REPO_NAME="abdullah_jenkins_ecr"
-    IMAGE_TAG="${env.BUILD_ID}"
-    REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"   
-    Public_Subnet_2 = "subnet-09c93874"
-    Public_Subnet_1 = "subnet-eaa81381"
-    // service_name = "appinservice"   
-    TASK_FAMILY="task"
+        AWS_DEFAULT_REGION = 'us-east-2'
+        AWS_ACCOUNT_ID="489994096722"
+        IMAGE_REPO_NAME="abdullah_jenkins_ecr"
+        IMAGE_TAG="${env.BUILD_ID}"
+        REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"  
     }
     parameters {
         string(name: 'ENVIRONMENT', defaultValue: 'DEV', description: 'Where should I deploy?')
-        choice(name: 'service_name', choices: ['appinservice', 'pythonapp'], description: 'Pick Service to Deploy')
+        string(name: 'service_name', defaultValue: 'appinservice', description: 'Pick Service to Deploy')
+        text(name: 'AWS_DEFAULT_REGION', defaultValue: '', description: 'Enter some information')
+        // text(name: 'BIOGRAPHY', defaultValue: '', description: 'Enter some information about the person')
+        // text(name: 'BIOGRAPHY', defaultValue: '', description: 'Enter some information about the person')
     }         
     stages{  
         stage('Logging into AWS ECR') {
