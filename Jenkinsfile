@@ -2,8 +2,8 @@ def app = 'Unknown'
 pipeline{
     agent any
     environment {
-        AWS_DEFAULT_REGION = 'us-east-2'
-        AWS_ACCOUNT_ID="489994096722"
+        // AWS_DEFAULT_REGION = 'us-east-2'
+        // AWS_ACCOUNT_ID="489994096722"
         IMAGE_REPO_NAME="abdullah_jenkins_ecr"
         IMAGE_TAG="${env.BUILD_ID}"
         REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"  
@@ -12,14 +12,13 @@ pipeline{
         string(name: 'ENVIRONMENT', defaultValue: 'DEV', description: 'Where should I deploy?')
         string(name: 'service_name', defaultValue: 'appinservice', description: 'Pick Service to Deploy')
         text(name: 'AWS_DEFAULT_REGION', defaultValue: '', description: 'Enter some information')
-        // text(name: 'BIOGRAPHY', defaultValue: '', description: 'Enter some information about the person')
-        // text(name: 'BIOGRAPHY', defaultValue: '', description: 'Enter some information about the person')
+        text(name: 'AWS_ACCOUNT_ID', defaultValue: '', description: 'Enter some information')
     }         
     stages{  
         stage('Logging into AWS ECR') {
             steps {
                 script {
-                    sh "aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
+                    sh "aws ecr get-login-password --region ${params.AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${params.AWS_ACCOUNT_ID}.dkr.ecr.${params.AWS_DEFAULT_REGION}.amazonaws.com"
                 }
             }
         }         
@@ -48,7 +47,7 @@ pipeline{
             steps{
                 script {
                     sh "docker tag ${IMAGE_REPO_NAME}:${IMAGE_TAG} ${REPOSITORY_URI}:$IMAGE_TAG"
-                    sh "docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:${IMAGE_TAG}"
+                    sh "docker push ${params.AWS_ACCOUNT_ID}.dkr.ecr.${params.AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:${IMAGE_TAG}"
                 }
             }
         }
