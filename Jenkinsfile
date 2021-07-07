@@ -4,7 +4,8 @@ pipeline{
     // agent { label 'slave-jnlpx' }
     environment {
         IMAGE_TAG="${env.BUILD_ID}"
-        JOB_NAME = "notify_slack:${env.BUILD_ID}"
+        JOB_NAME = "Notify_Slack:${env.BUILD_ID}"
+        BRANCH_NAME = "main"
         REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"  
     }
     parameters {
@@ -70,12 +71,12 @@ pipeline{
         post {
             success {
                 script {
-                    if ( env.BRANCH_NAME == 'master')
+                    if ( env.BRANCH_NAME == 'main')
                     {
-                        slackSend channel: 'U01SLG5TVQF', message: "Build Succeeded. The Job: ${env.JOB_NAME} built successfully with Build# ${env.BUILD_NUMBER} which triggered with change in ${env.BRANCH_NAME}"
+                        slackSend channel: 'U01SLG5TVQF', message: "Build Succeeded. The Job: ${env.JOB_NAME} built successfully with Build# ${env.BUILD_NUMBER} which triggered with change in ${env.BRANCH_NAME} Branch on ${env.GIT_URL}"
                     }    
                     else {
-                        slackSend channel: 'U01SLG5TVQF', message: "Build Failed. The Job: ${env.JOB_NAME} build failed with Build# ${env.BUILD_NUMBER} which triggered with change in ${env.BRANCH_NAME}" 
+                        slackSend channel: 'U01SLG5TVQF', message: "Build Failed. The Job: ${env.JOB_NAME} build failed with Build# ${env.BUILD_NUMBER} which triggered with change in ${env.BRANCH_NAME} Branch on ${env.GIT_URL}" 
                     }
             }           
         } 
