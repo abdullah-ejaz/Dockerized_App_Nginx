@@ -6,7 +6,7 @@ pipeline{
     environment {
         IMAGE_TAG="${env.BUILD_ID}"
         JOB_NAME = "Notify_Slack:${env.BUILD_ID}"
-        BRANCH_NAME = "Mains"
+        BRANCH_NAME = "Main"
         REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"  
     }
     parameters {
@@ -72,7 +72,7 @@ pipeline{
         post {
             success {
                 script {
-                    if ( env.BRANCH_NAME == 'main')
+                    if ( env.BRANCH_NAME == 'Main')
                     {
                         slacksuccess.success()
                     }    
