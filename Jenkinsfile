@@ -1,3 +1,4 @@
+@Library("my-shared-library") _
 def app = 'Unknown'
 pipeline{
     agent { label 'slave' }
@@ -5,7 +6,7 @@ pipeline{
     environment {
         IMAGE_TAG="${env.BUILD_ID}"
         JOB_NAME = "Notify_Slack:${env.BUILD_ID}"
-        BRANCH_NAME = "mains"
+        BRANCH_NAME = "main"
         REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"  
     }
     parameters {
@@ -73,10 +74,10 @@ pipeline{
                 script {
                     if ( env.BRANCH_NAME == 'main')
                     {
-                        slackSend color: "good", channel: 'U01SLG5TVQF', message: "Build Succeeded. The Job: ${env.JOB_NAME} has been built successfully with Build# ${env.BUILD_NUMBER} which triggered with change in ${env.BRANCH_NAME} Branch with Job URL: ${env.BUILD_URL}"
+                        slacksuccess()
                     }    
                     else {
-                        slackSend color: "danger", channel: 'U01SLG5TVQF', message: "Build Failed. The Job: ${env.JOB_NAME} has been failed with Build# ${env.BUILD_NUMBER} which triggered with change in ${env.BRANCH_NAME} Branch with Job URL: ${env.BUILD_URL}" 
+                        slackfailure()
                     }
             }           
         } 
