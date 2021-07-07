@@ -73,10 +73,10 @@ pipeline{
                 script {
                     if ( env.BRANCH_NAME == 'main')
                     {
-                        slackSend channel: 'U01SLG5TVQF', message: "Build Succeeded. The Job: ${env.JOB_NAME} built successfully with Build# ${env.BUILD_NUMBER} which triggered with change in ${env.BRANCH_NAME} Branch on ${env.GIT_URL}"
+                        slackSend channel: 'U01SLG5TVQF', message: "Build Succeeded. The Job: ${env.JOB_NAME} built successfully with Build# ${env.BUILD_NUMBER} which triggered with change in ${env.BRANCH_NAME} Branch on ${env.JENKINS_URL}"
                     }    
                     else {
-                        slackSend channel: 'U01SLG5TVQF', message: "Build Failed. The Job: ${env.JOB_NAME} build failed with Build# ${env.BUILD_NUMBER} which triggered with change in ${env.BRANCH_NAME} Branch on ${env.GIT_URL}" 
+                        slackSend channel: 'U01SLG5TVQF', message: "Build Failed. The Job: ${env.JOB_NAME} build failed with Build# ${env.BUILD_NUMBER} which triggered with change in ${env.BRANCH_NAME} Branch on ${env.JENKINS_URL}" 
                     }
             }           
         } 
