@@ -1,7 +1,7 @@
 @Library("my-shared-library") _
 def app = 'Unknown'
 pipeline{
-    agent { label 'slave' }
+    agent { label 'slave && slave-jnlpx' }
     // agent { label 'slave-jnlpx' }
     environment {
         IMAGE_TAG="${env.BUILD_ID}"
