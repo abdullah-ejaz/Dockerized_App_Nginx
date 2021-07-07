@@ -1,6 +1,6 @@
 def app = 'Unknown'
 pipeline{
-    agent any
+    agent { label 'slave' }
     environment {
         IMAGE_TAG="${env.BUILD_ID}"
         REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"  
@@ -53,7 +53,6 @@ pipeline{
             steps{
                 script {
                     sh "sed -i 's/%BUILD_ID%/${BUILD_ID}/g' task.json"
-                    //  sed -i 's/database_name_here/wordpress/g' /var/www/html/wp-config.php
                     sh "aws ecs register-task-definition --cli-input-json file://task.json"
                 }
             }
