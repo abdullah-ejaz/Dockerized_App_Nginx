@@ -74,10 +74,10 @@ pipeline{
                 script {
                     if ( env.BRANCH_NAME == 'main')
                     {
-                        slacksuccess(success)
+                        slacksuccess.success()
                     }    
                     else {
-                        slacksuccess(failure)
+                        slacksuccess.failure()
                     }
             }           
         } 
