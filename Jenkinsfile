@@ -2,7 +2,7 @@
 def app = 'Unknown'
 pipeline{
     // agent { label 'slave || slave-jnlpx' }
-    agent { label 'slave-jnlpx' }
+    agent { label 'slave-jnlp' }
     environment {
         IMAGE_TAG="${env.BUILD_ID}"
         JOB_NAME = "Notify_Slack:${env.BUILD_ID}"
