@@ -1,0 +1,185 @@
+credentials:
+  system:
+    domainCredentials:
+      - credentials:
+          - usernamePassword:
+            id: ""
+            password: ""
+            scope: GLOBAL
+            username: ""
+          - string:
+            id: ""
+            scope: GLOBAL
+            secret: ""
+jenkins:
+  agentProtocols:
+    - "JNLP4-connect"
+    - "Ping"
+  authorizationStrategy:
+    loggedInUsersCanDoAnything:
+      allowAnonymousRead: false
+  clouds:
+    - ecs:
+        cluster: "arn:aws:ecs:us-east-2:489994096722:cluster/"
+        jenkinsUrl: "http://18.224.95.12:8080/"
+        name: "AWS-ECS-Cloud"
+        regionName: "us-east-2"
+        templates:
+          - assignPublicIp: true
+            cpu: 512
+            defaultCapacityProvider: false
+            executionRole: "arn:aws:iam::489994096722:role/ecsTaskExecutionRole"
+            image: "489994096722.dkr.ecr.us-east-2.amazonaws.com/abdullah_jenkins_ecr"
+            label: "slave1"
+            launchType: "FARGATE"
+            memory: 0
+            memoryReservation: 1024
+            networkMode: "default"
+            platformVersion: "LATEST"
+            privileged: false
+            remoteFSRoot: "/home/jenkins"
+            securityGroups: "sg-0fe33bb1bc74e8fa9"
+            sharedMemorySize: 0
+            subnets: "subnet-eaa81381,subnet-09c93874"
+            templateName: "jenkins-agent-new"
+            uniqueRemoteFSRoot: false
+  crumbIssuer:
+    standard:
+      excludeClientIPFromCrumb: false
+  disableRememberMe: false
+  labelAtoms:
+    - name: "master"
+    - name: "slave1"
+  markupFormatter: "plainText"
+  mode: NORMAL
+  myViewsTabBar: "standard"
+  numExecutors: 2
+  primaryView:
+    all:
+      name: "all"
+  projectNamingStrategy: "standard"
+  quietPeriod: 5
+  remotingSecurity:
+    enabled: true
+  scmCheckoutRetryCount: 0
+  securityRealm:
+    local:
+      allowsSignup: false
+      enableCaptcha: false
+      users:
+        - id: "admin"
+          name: "admin"
+          properties:
+            - "apiToken"
+            - "mailer"
+            - preferredProvider:
+                providerId: "default"
+            - "slack"
+  slaveAgentPort: 50000
+  updateCenter:
+    sites:
+      - id: "default"
+        url: "https://updates.jenkins.io/update-center.json"
+  views:
+    - all:
+        name: "all"
+  viewsTabBar: "standard"
+security:
+  apiToken:
+    creationOfLegacyTokenEnabled: false
+    tokenGenerationOnCreationEnabled: false
+    usageStatisticsEnabled: true
+  sSHD:
+    port: -1
+unclassified:
+  buildDiscarders:
+    configuredBuildDiscarders:
+      - "jobBuildDiscarder"
+  buildStepOperation:
+    enabled: false
+  email-ext:
+    adminRequiredForTemplateTesting: false
+    allowUnregisteredEnabled: false
+    charset: "UTF-8"
+    debugMode: false
+    defaultBody: |-
+      $PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS:
+      Check console output at $BUILD_URL to view the results.
+    defaultContentType: "text/plain"
+    defaultSubject: "$PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS!"
+    defaultTriggerIds:
+      - ""
+    mailAccount:
+      smtpPassword: ""
+    maxAttachmentSize: -1
+    maxAttachmentSizeMb: -1
+    precedenceBulk: false
+    watchingEnabled: false
+  fingerprints:
+    fingerprintCleanupDisabled: false
+    storage: "file"
+  gitHubConfiguration:
+    apiRateLimitChecker: ThrottleForNormalize
+  gitHubPluginConfig:
+    hookUrl: "http://18.224.95.12:8080/github-webhook/"
+  gitSCM:
+    addGitTagAction: false
+    allowSecondFetch: false
+    createAccountBasedOnEmail: false
+    disableGitToolChooser: false
+    hideCredentials: false
+    showEntireCommitSummaryInChanges: false
+    useExistingAccountWithSameEmail: false
+  globalLibraries:
+    libraries:
+      - defaultVersion: "master"
+        name: "AutomationLibrary"
+        retriever:
+          modernSCM:
+            scm:
+              git:
+                credentialsId: ""
+                id: ""
+                remote: ""
+                traits:
+                  - "gitBranchDiscovery"
+      - defaultVersion: "master"
+        name: ""
+        retriever:
+          modernSCM:
+            scm:
+              git:
+                credentialsId: ""
+                id: ""
+                remote: ""
+                traits:
+                  - "gitBranchDiscovery"
+  junitTestResultStorage:
+    storage: "file"
+  location:
+    adminAddress: "address not configured yet <nobody@nowhere>"
+    url: "http://18.224.95.12:8080/"
+  mailer:
+    charset: "UTF-8"
+    useSsl: false
+    useTls: false
+  pollSCM:
+    pollingThreadCount: 10
+  slackNotifier:
+    botUser: false
+    room: "U01SLG5TVQF"
+    sendAsText: false
+    teamDomain: "eurustechnologies"
+    tokenCredentialId: "VY9YsA5pamnz3uB4uL42kkdn"
+  timestamper:
+    allPipelines: false
+    elapsedTimeFormat: "'<b>'HH:mm:ss.S'</b> '"
+    systemTimeFormat: "'<b>'HH:mm:ss'</b> '"
+tool:
+  git:
+    installations:
+      - home: "git"
+        name: "Default"
+  mavenGlobalConfig:
+    globalSettingsProvider: "standard"
+    settingsProvider: "standard"
