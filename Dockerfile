@@ -27,3 +27,4 @@ EXPOSE 90
 # Set the default command to execute
 # when creating a new container
 CMD service nginx start
+# CMD ["nginx", "-g", "daemon off;"]
