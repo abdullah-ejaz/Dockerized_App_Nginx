@@ -1,0 +1,892 @@
+Started by user abdullah
+Obtained Jenkinsfile from git https://github.com/abdullah-ejaz/docker_nginx_app.git
+Running in Durability level: MAX_SURVIVABILITY
+Loading library my-shared-library@main
+Attempting to resolve main from remote references...
+ > git --version # timeout=10
+ > git --version # 'git version 2.25.1'
+using GIT_ASKPASS to set credentials 
+ > git ls-remote -h -- https://github.com/abdullah-ejaz/docker_nginx_app # timeout=10
+Found match: refs/heads/main revision 263526a60e3a6322cc34817985eed9a14aac8fa8
+Selected Git installation does not exist. Using Default
+The recommended git tool is: NONE
+using credential githubid
+ > git rev-parse --resolve-git-dir /var/lib/jenkins/workspace/testing-automating-fargate@libs/my-shared-library/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/abdullah-ejaz/docker_nginx_app # timeout=10
+Fetching without tags
+Fetching upstream changes from https://github.com/abdullah-ejaz/docker_nginx_app
+ > git --version # timeout=10
+ > git --version # 'git version 2.25.1'
+using GIT_ASKPASS to set credentials 
+ > git fetch --no-tags --force --progress -- https://github.com/abdullah-ejaz/docker_nginx_app +refs/heads/*:refs/remotes/origin/* # timeout=10
+Checking out Revision 263526a60e3a6322cc34817985eed9a14aac8fa8 (main)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 263526a60e3a6322cc34817985eed9a14aac8fa8 # timeout=10
+Commit message: "shared pipeline"
+ > git rev-list --no-walk 263526a60e3a6322cc34817985eed9a14aac8fa8 # timeout=10
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Running on Jenkins in /var/lib/jenkins/workspace/testing-automating-fargate
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Declarative: Checkout SCM)
+[Pipeline] checkout
+Selected Git installation does not exist. Using Default
+The recommended git tool is: NONE
+using credential githubid
+ > git rev-parse --resolve-git-dir /var/lib/jenkins/workspace/testing-automating-fargate/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/abdullah-ejaz/docker_nginx_app.git # timeout=10
+Fetching upstream changes from https://github.com/abdullah-ejaz/docker_nginx_app.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.25.1'
+using GIT_ASKPASS to set credentials 
+ > git fetch --tags --force --progress -- https://github.com/abdullah-ejaz/docker_nginx_app.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git rev-parse refs/remotes/origin/main^{commit} # timeout=10
+Checking out Revision 263526a60e3a6322cc34817985eed9a14aac8fa8 (refs/remotes/origin/main)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 263526a60e3a6322cc34817985eed9a14aac8fa8 # timeout=10
+Commit message: "shared pipeline"
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Logging into AWS ECR)
+[Pipeline] script
+[Pipeline] {
+[Pipeline] sh
++ docker login --username AWS --password-stdin 489994096722.dkr.ecr.us-east-2.amazonaws.com
++ aws ecr get-login-password --region us-east-2
+WARNING! Your password will be stored unencrypted in /var/lib/jenkins/.docker/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+
+Login Succeeded
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Build image)
+[Pipeline] script
+[Pipeline] {
+[Pipeline] isUnix
+[Pipeline] sh
++ docker build -t abdullah_jenkins_ecr:16 .
+Sending build context to Docker daemon  114.2kB
+
+Step 1/12 : FROM ubuntu:latest
+ ---> 9873176a8ff5
+Step 2/12 : MAINTAINER "abdullah@gmail.com"
+ ---> Using cache
+ ---> 0564d57fadd4
+Step 3/12 : USER root
+ ---> Using cache
+ ---> 928d2a52cf88
+Step 4/12 : RUN apt-get update
+ ---> Using cache
+ ---> 5d9d865caf53
+Step 5/12 : RUN apt-get install -y nginx nodejs
+ ---> Using cache
+ ---> 3abebd5d7217
+Step 6/12 : RUN rm -v /etc/nginx/nginx.conf
+ ---> Using cache
+ ---> 059c10311776
+Step 7/12 : ADD nginx.conf /etc/nginx/
+ ---> Using cache
+ ---> aa1dc0a2d6c6
+Step 8/12 : ADD web /usr/share/nginx/html/
+ ---> Using cache
+ ---> b513b5f71d2c
+Step 9/12 : ADD web /var/www/html/
+ ---> Using cache
+ ---> e78eca156449
+Step 10/12 : RUN echo "daemon off;" >> /etc/nginx/nginx.conf
+ ---> Using cache
+ ---> ae29a30e7354
+Step 11/12 : EXPOSE 90
+ ---> Using cache
+ ---> fd9ac6fa0ed4
+Step 12/12 : CMD service nginx start
+ ---> Using cache
+ ---> 369197175f6b
+Successfully built 369197175f6b
+Successfully tagged abdullah_jenkins_ecr:16
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Test image)
+[Pipeline] script
+[Pipeline] {
+[Pipeline] isUnix
+[Pipeline] sh
++ docker inspect -f . abdullah_jenkins_ecr:16
+.
+[Pipeline] withDockerContainer
+Jenkins does not seem to be running inside a container
+$ docker run -t -d -u 113:119 -w /var/lib/jenkins/workspace/testing-automating-fargate -v /var/lib/jenkins/workspace/testing-automating-fargate:/var/lib/jenkins/workspace/testing-automating-fargate:rw,z -v /var/lib/jenkins/workspace/testing-automating-fargate@tmp:/var/lib/jenkins/workspace/testing-automating-fargate@tmp:rw,z -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** abdullah_jenkins_ecr:16 cat
+$ docker top e48f79689b745e187fef9f418a3301df2922765576611bd1a8b62d81cade7142 -eo pid,comm
+[Pipeline] {
+[Pipeline] sh
++ echo Tests passed
+Tests passed
+[Pipeline] }
+$ docker stop --time=1 e48f79689b745e187fef9f418a3301df2922765576611bd1a8b62d81cade7142
+$ docker rm -f e48f79689b745e187fef9f418a3301df2922765576611bd1a8b62d81cade7142
+[Pipeline] // withDockerContainer
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Push image)
+[Pipeline] script
+[Pipeline] {
+[Pipeline] sh
++ docker tag abdullah_jenkins_ecr:16 489994096722.dkr.ecr.us-east-2.amazonaws.com/abdullah_jenkins_ecr:16
+[Pipeline] sh
++ docker push 489994096722.dkr.ecr.us-east-2.amazonaws.com/abdullah_jenkins_ecr:16
+The push refers to repository [489994096722.dkr.ecr.us-east-2.amazonaws.com/abdullah_jenkins_ecr]
+8524b247b2b9: Preparing
+c995ac5c7f97: Preparing
+04769ba10e33: Preparing
+42bb56a68bd8: Preparing
+546325d8b0f6: Preparing
+51e651200fbf: Preparing
+42fe4c08e19e: Preparing
+feef05f055c9: Preparing
+51e651200fbf: Waiting
+42fe4c08e19e: Waiting
+feef05f055c9: Waiting
+04769ba10e33: Layer already exists
+42bb56a68bd8: Layer already exists
+546325d8b0f6: Layer already exists
+c995ac5c7f97: Layer already exists
+8524b247b2b9: Layer already exists
+51e651200fbf: Layer already exists
+42fe4c08e19e: Layer already exists
+feef05f055c9: Layer already exists
+16: digest: sha256:ec9829f9ddf800700660654da8def077c60ad838ac16cff9bfa7414aa680825f size: 1988
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (register Task defintion)
+[Pipeline] script
+[Pipeline] {
+[Pipeline] sh
++ sed -i s/%BUILD_ID%/16/g task.json
+[Pipeline] sh
++ aws ecs register-task-definition --cli-input-json file://task.json
+{
+    "taskDefinition": {
+        "taskDefinitionArn": "arn:aws:ecs:us-east-2:489994096722:task-definition/task:37",
+        "containerDefinitions": [
+            {
+                "name": "abdullah-jenkins-ecs-app",
+                "image": "489994096722.dkr.ecr.us-east-2.amazonaws.com/abdullah_jenkins_ecr:16",
+                "cpu": 250,
+                "memoryReservation": 420,
+                "portMappings": [],
+                "essential": true,
+                "environment": [],
+                "mountPoints": [],
+                "volumesFrom": [],
+                "logConfiguration": {
+                    "logDriver": "awslogs",
+                    "options": {
+                        "awslogs-group": "/ecs/abdullah-jenkins-ecs-app",
+                        "awslogs-region": "us-east-2",
+                        "awslogs-stream-prefix": "ecs"
+                    }
+                }
+            }
+        ],
+        "family": "task",
+        "executionRoleArn": "arn:aws:iam::489994096722:role/ecsTaskExecutionRole",
+        "networkMode": "awsvpc",
+        "revision": 37,
+        "volumes": [],
+        "status": "ACTIVE",
+        "requiresAttributes": [
+            {
+                "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
+            },
+            {
+                "name": "ecs.capability.execution-role-awslogs"
+            },
+            {
+                "name": "com.amazonaws.ecs.capability.ecr-auth"
+            },
+            {
+                "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+            },
+            {
+                "name": "com.amazonaws.ecs.capability.docker-remote-api.1.21"
+            },
+            {
+                "name": "ecs.capability.execution-role-ecr-pull"
+            },
+            {
+                "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+            },
+            {
+                "name": "ecs.capability.task-eni"
+            }
+        ],
+        "placementConstraints": [],
+        "compatibilities": [
+            "EC2",
+            "FARGATE"
+        ],
+        "requiresCompatibilities": [
+            "FARGATE"
+        ],
+        "cpu": "512",
+        "memory": "1024",
+        "registeredAt": 1625873607.105,
+        "registeredBy": "arn:aws:iam::489994096722:user/abdullah"
+    }
+}
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Update service)
+[Pipeline] script
+[Pipeline] {
+[Pipeline] sh
++ aws ecs update-service --cluster abdullah-jenkins-fargate --service appinservice --task-definition task --desired-count 1
+{
+    "service": {
+        "serviceArn": "arn:aws:ecs:us-east-2:489994096722:service/abdullah-jenkins-fargate/appinservice",
+        "serviceName": "appinservice",
+        "clusterArn": "arn:aws:ecs:us-east-2:489994096722:cluster/abdullah-jenkins-fargate",
+        "loadBalancers": [],
+        "serviceRegistries": [],
+        "status": "ACTIVE",
+        "desiredCount": 1,
+        "runningCount": 1,
+        "pendingCount": 0,
+        "launchType": "FARGATE",
+        "platformVersion": "LATEST",
+        "taskDefinition": "arn:aws:ecs:us-east-2:489994096722:task-definition/task:37",
+        "deploymentConfiguration": {
+            "deploymentCircuitBreaker": {
+                "enable": false,
+                "rollback": false
+            },
+            "maximumPercent": 200,
+            "minimumHealthyPercent": 100
+        },
+        "deployments": [
+            {
+                "id": "ecs-svc/2166419643349323452",
+                "status": "PRIMARY",
+                "taskDefinition": "arn:aws:ecs:us-east-2:489994096722:task-definition/task:37",
+                "desiredCount": 1,
+                "pendingCount": 0,
+                "runningCount": 0,
+                "failedTasks": 0,
+                "createdAt": 1625873607.801,
+                "updatedAt": 1625873607.801,
+                "launchType": "FARGATE",
+                "platformVersion": "1.4.0",
+                "networkConfiguration": {
+                    "awsvpcConfiguration": {
+                        "subnets": [
+                            "subnet-eaa81381",
+                            "subnet-09c93874"
+                        ],
+                        "securityGroups": [
+                            "sg-0fe33bb1bc74e8fa9"
+                        ],
+                        "assignPublicIp": "ENABLED"
+                    }
+                },
+                "rolloutState": "IN_PROGRESS",
+                "rolloutStateReason": "ECS deployment ecs-svc/2166419643349323452 in progress."
+            },
+            {
+                "id": "ecs-svc/8156375478875883308",
+                "status": "ACTIVE",
+                "taskDefinition": "arn:aws:ecs:us-east-2:489994096722:task-definition/task:36",
+                "desiredCount": 1,
+                "pendingCount": 0,
+                "runningCount": 1,
+                "failedTasks": 0,
+                "createdAt": 1625870606.621,
+                "updatedAt": 1625870808.019,
+                "launchType": "FARGATE",
+                "platformVersion": "1.4.0",
+                "networkConfiguration": {
+                    "awsvpcConfiguration": {
+                        "subnets": [
+                            "subnet-eaa81381",
+                            "subnet-09c93874"
+                        ],
+                        "securityGroups": [
+                            "sg-0fe33bb1bc74e8fa9"
+                        ],
+                        "assignPublicIp": "ENABLED"
+                    }
+                },
+                "rolloutState": "COMPLETED",
+                "rolloutStateReason": "ECS deployment ecs-svc/8156375478875883308 completed."
+            }
+        ],
+        "roleArn": "arn:aws:iam::489994096722:role/aws-service-role/ecs.amazonaws.com/AWSServiceRoleForECS",
+        "events": [
+            {
+                "id": "a96abac4-dfa8-4033-ad1e-ba8c53252e4b",
+                "createdAt": 1625870808.023,
+                "message": "(service appinservice) has reached a steady state."
+            },
+            {
+                "id": "910ab596-f327-4817-ba64-7a96963b17c7",
+                "createdAt": 1625870808.022,
+                "message": "(service appinservice) (deployment ecs-svc/8156375478875883308) deployment completed."
+            },
+            {
+                "id": "bd818eed-0420-4f67-a2c3-6c72fca99cff",
+                "createdAt": 1625870703.291,
+                "message": "(service appinservice) has stopped 1 running tasks: (task 06e41a04dda348a0a41ecf3dde96ae51)."
+            },
+            {
+                "id": "1af18fa2-06f0-43f5-8aee-d67e562f02e2",
+                "createdAt": 1625870619.808,
+                "message": "(service appinservice) has started 1 tasks: (task de2151e7c3d04e5e9772919776c21277)."
+            },
+            {
+                "id": "99aae7dc-dfa9-497e-ab4d-bb0b651e8f7f",
+                "createdAt": 1625870437.171,
+                "message": "(service appinservice) has reached a steady state."
+            },
+            {
+                "id": "be63a8f9-1a42-4678-a3ae-0d43bcbafd93",
+                "createdAt": 1625870406.57,
+                "message": "(service appinservice) has started 1 tasks: (task 06e41a04dda348a0a41ecf3dde96ae51)."
+            },
+            {
+                "id": "384d024c-74af-47d8-9b4d-a25646b860eb",
+                "createdAt": 1625869337.083,
+                "message": "(service appinservice) has reached a steady state."
+            },
+            {
+                "id": "ced0f081-3f21-490b-8ac5-34cc76924857",
+                "createdAt": 1625869337.082,
+                "message": "(service appinservice) (deployment ecs-svc/3211583371368722265) deployment completed."
+            },
+            {
+                "id": "65ad24d5-f264-4a45-b417-0c95ca72c1f4",
+                "createdAt": 1625869305.476,
+                "message": "(service appinservice) has started 1 tasks: (task 46242845976b4a999cca68439035a690)."
+            },
+            {
+                "id": "7a660087-6118-4a5d-b70e-f0b5fe71f7ea",
+                "createdAt": 1625862338.958,
+                "message": "(service appinservice) has reached a steady state."
+            },
+            {
+                "id": "46a9ce08-f003-4e15-8342-096f28b5a078",
+                "createdAt": 1625840726.201,
+                "message": "(service appinservice) has reached a steady state."
+            },
+            {
+                "id": "47a1e2f2-4a65-435d-bd70-ef69ce05b509",
+                "createdAt": 1625819124.021,
+                "message": "(service appinservice) has reached a steady state."
+            },
+            {
+                "id": "794ee6a3-63c0-4618-a7fe-b26ae5ee7dca",
+                "createdAt": 1625797514.115,
+                "message": "(service appinservice) has reached a steady state."
+            },
+            {
+                "id": "fbd061fe-d93b-4995-8ba7-ba1f782927b1",
+                "createdAt": 1625775903.053,
+                "message": "(service appinservice) has reached a steady state."
+            },
+            {
+                "id": "bde673cf-6711-4e97-82da-c40d4f1f85dc",
+                "createdAt": 1625775890.305,
+                "message": "(service appinservice) has stopped 1 running tasks: (task 00058f4009a6421a861785f5d58cf549)."
+            },
+            {
+                "id": "31b5e3c6-fccc-4d14-9497-c2e0f4bcda76",
+                "createdAt": 1625762347.525,
+                "message": "(service appinservice) has reached a steady state."
+            },
+            {
+                "id": "c6840376-25d5-4a3a-b960-952f79c19773",
+                "createdAt": 1625762347.524,
+                "message": "(service appinservice) (deployment ecs-svc/7524313739317187652) deployment completed."
+            },
+            {
+                "id": "d42c75da-92e1-4032-aec9-37eed6da5c32",
+                "createdAt": 1625762244.429,
+                "message": "(service appinservice) has stopped 1 running tasks: (task 18960fab887f42b49c2c5bd33d3242a5)."
+            },
+            {
+                "id": "8a6f7317-658d-4b78-960b-fd5e32273262",
+                "createdAt": 1625762180.769,
+                "message": "(service appinservice) has started 1 tasks: (task 00058f4009a6421a861785f5d58cf549)."
+            },
+            {
+                "id": "6f4106fd-acae-4171-9abc-03c878b3cd89",
+                "createdAt": 1625744408.126,
+                "message": "(service appinservice) has reached a steady state."
+            },
+            {
+                "id": "77a0b750-07cb-47bb-8e47-5b7886e8dbf9",
+                "createdAt": 1625722798.929,
+                "message": "(service appinservice) has reached a steady state."
+            },
+            {
+                "id": "244773f1-e68d-465a-9a89-85086972fee6",
+                "createdAt": 1625701192.929,
+                "message": "(service appinservice) has reached a steady state."
+            },
+            {
+                "id": "e946aab6-5f98-4734-9521-08a891988231",
+                "createdAt": 1625701192.928,
+                "message": "(service appinservice) (deployment ecs-svc/4077740381276930280) deployment completed."
+            },
+            {
+                "id": "9133d478-2bd2-4466-811b-21ee9e174389",
+                "createdAt": 1625701089.243,
+                "message": "(service appinservice) has stopped 1 running tasks: (task 97ef68a38cae4213b2a8a99e7b252a5a)."
+            },
+            {
+                "id": "30d4114f-d3b3-4e69-81c0-397ccf554274",
+                "createdAt": 1625700995.816,
+                "message": "(service appinservice) has started 1 tasks: (task 18960fab887f42b49c2c5bd33d3242a5)."
+            },
+            {
+                "id": "a8c4bb08-527c-442a-bb04-e844551fa347",
+                "createdAt": 1625699442.797,
+                "message": "(service appinservice) has reached a steady state."
+            },
+            {
+                "id": "f67c5d99-4721-407f-8999-c4e282556249",
+                "createdAt": 1625699442.796,
+                "message": "(service appinservice) (deployment ecs-svc/3415615373932643287) deployment completed."
+            },
+            {
+                "id": "0cb6471b-59f0-4766-863f-c1db158a3002",
+                "createdAt": 1625699338.536,
+                "message": "(service appinservice) has stopped 1 running tasks: (task 3712ec1757194c1da34c03f3d440b5e9)."
+            },
+            {
+                "id": "dd0c39ae-fe1c-4a28-892a-5a26687af7c4",
+                "createdAt": 1625699243.323,
+                "message": "(service appinservice) has started 1 tasks: (task 97ef68a38cae4213b2a8a99e7b252a5a)."
+            },
+            {
+                "id": "afb9d114-8e0d-4ce9-af5a-d8529e601acc",
+                "createdAt": 1625698802.303,
+                "message": "(service appinservice) has reached a steady state."
+            },
+            {
+                "id": "b2aa019d-304e-4006-8b0b-c6ae998f9d26",
+                "createdAt": 1625698802.302,
+                "message": "(service appinservice) (deployment ecs-svc/7776885546643575463) deployment completed."
+            },
+            {
+                "id": "72e77645-20a3-4128-b677-b730b6ae7459",
+                "createdAt": 1625698697.736,
+                "message": "(service appinservice) has stopped 1 running tasks: (task 9f8e6908c9b54830a9cba05549f6c0fa)."
+            },
+            {
+                "id": "0951a0da-4c8d-414e-ac5b-d433fd7ffdb7",
+                "createdAt": 1625698611.432,
+                "message": "(service appinservice) has started 1 tasks: (task 3712ec1757194c1da34c03f3d440b5e9)."
+            },
+            {
+                "id": "50162c26-1f84-4614-8782-fb9aa859afae",
+                "createdAt": 1625698122.553,
+                "message": "(service appinservice) has reached a steady state."
+            },
+            {
+                "id": "37d754c9-e86a-40e5-9f2c-03d295fabcbc",
+                "createdAt": 1625698122.552,
+                "message": "(service appinservice) (deployment ecs-svc/5212131884908059517) deployment completed."
+            },
+            {
+                "id": "71555d1f-399f-48bc-ac08-f61e8e5618a7",
+                "createdAt": 1625698017.122,
+                "message": "(service appinservice) has stopped 1 running tasks: (task 70e6ba2730584655b41e400ec58cbde2)."
+            },
+            {
+                "id": "a6a035c0-a700-4442-a0df-6e5d4e2313fd",
+                "createdAt": 1625697933.991,
+                "message": "(service appinservice) has started 1 tasks: (task 9f8e6908c9b54830a9cba05549f6c0fa)."
+            },
+            {
+                "id": "f13e9911-5891-475a-91f4-fac963b8e40f",
+                "createdAt": 1625697776.778,
+                "message": "(service appinservice) has reached a steady state."
+            },
+            {
+                "id": "c4831d5e-cca9-4564-9d89-2414917e869e",
+                "createdAt": 1625697776.777,
+                "message": "(service appinservice) (deployment ecs-svc/4827966512931809589) deployment completed."
+            },
+            {
+                "id": "fd77afcf-e7de-4c93-bd38-a70715cca180",
+                "createdAt": 1625697672.971,
+                "message": "(service appinservice) has stopped 1 running tasks: (task c18b2f639d9144b8a7b4ddfaa091b6c5)."
+            },
+            {
+                "id": "37fd0eea-ddee-449b-8dbd-9a670a37cdb4",
+                "createdAt": 1625697588.283,
+                "message": "(service appinservice) has started 1 tasks: (task 70e6ba2730584655b41e400ec58cbde2)."
+            },
+            {
+                "id": "eed4c7a0-b5c1-4c7a-9dae-103fd33901c8",
+                "createdAt": 1625695941.679,
+                "message": "(service appinservice) has reached a steady state."
+            },
+            {
+                "id": "30151de7-e307-4036-97e2-2fc4ab2faa37",
+                "createdAt": 1625695941.678,
+                "message": "(service appinservice) (deployment ecs-svc/3906730166171964647) deployment completed."
+            },
+            {
+                "id": "3043237b-3768-4479-bad2-98342d0273bd",
+                "createdAt": 1625695838.031,
+                "message": "(service appinservice) has stopped 1 running tasks: (task 342682a0d7fd4b6f8db29f2c9d56ccf0)."
+            },
+            {
+                "id": "9d569f7e-28d5-43ee-ab61-ae8742400fdf",
+                "createdAt": 1625695752.975,
+                "message": "(service appinservice) has started 1 tasks: (task c18b2f639d9144b8a7b4ddfaa091b6c5)."
+            },
+            {
+                "id": "5e3e640b-506f-4d4c-9a95-71a22dab1dba",
+                "createdAt": 1625687096.14,
+                "message": "(service appinservice) has reached a steady state."
+            },
+            {
+                "id": "9033c9ac-6625-48a4-a3af-1010353cb655",
+                "createdAt": 1625687096.139,
+                "message": "(service appinservice) (deployment ecs-svc/5085154998151154003) deployment completed."
+            },
+            {
+                "id": "b358a55e-bd81-4e72-ae83-5d860495b954",
+                "createdAt": 1625686992.017,
+                "message": "(service appinservice) has stopped 1 running tasks: (task fef5a044fb0343a9972742990bd40638)."
+            },
+            {
+                "id": "79e2884a-5a7b-45dc-a85a-f6bb02f884a6",
+                "createdAt": 1625686907.158,
+                "message": "(service appinservice) has started 1 tasks: (task 342682a0d7fd4b6f8db29f2c9d56ccf0)."
+            },
+            {
+                "id": "6a8b5dbf-4976-4250-ae9b-abeeb25e451c",
+                "createdAt": 1625686393.666,
+                "message": "(service appinservice) has reached a steady state."
+            },
+            {
+                "id": "03d87d60-8887-4f32-9ff9-f7094dd083c1",
+                "createdAt": 1625686393.665,
+                "message": "(service appinservice) (deployment ecs-svc/5635944838581857978) deployment completed."
+            },
+            {
+                "id": "79fc74ba-fe42-445a-ae13-68cf0676a90a",
+                "createdAt": 1625686287.907,
+                "message": "(service appinservice) has stopped 1 running tasks: (task 25166de4b5a3481bbfe1521fd480dc77)."
+            },
+            {
+                "id": "bee260a1-92ed-43a5-a10c-151fced3b1cd",
+                "createdAt": 1625686224.906,
+                "message": "(service appinservice) has started 1 tasks: (task fef5a044fb0343a9972742990bd40638)."
+            },
+            {
+                "id": "c1991538-2caf-4a49-8939-0c5ce72c53bb",
+                "createdAt": 1625686098.889,
+                "message": "(service appinservice) has reached a steady state."
+            },
+            {
+                "id": "61ccda55-0215-4204-a633-f457bf13f7c9",
+                "createdAt": 1625686098.888,
+                "message": "(service appinservice) (deployment ecs-svc/8962028596534635113) deployment completed."
+            },
+            {
+                "id": "3ac5dcb8-a245-48b1-96eb-dcd84317b675",
+                "createdAt": 1625685993.94,
+                "message": "(service appinservice) has stopped 1 running tasks: (task ce78e17c8b294e9282cae13db53fc555)."
+            },
+            {
+                "id": "336e310a-cd6a-4c37-8376-a4ba6005fe0c",
+                "createdAt": 1625685900.239,
+                "message": "(service appinservice) has started 1 tasks: (task 25166de4b5a3481bbfe1521fd480dc77)."
+            },
+            {
+                "id": "19b5a33f-6f7f-41c5-ad94-4a7316f265ce",
+                "createdAt": 1625685804.177,
+                "message": "(service appinservice) has reached a steady state."
+            },
+            {
+                "id": "75b8f7b5-af93-4ad6-a953-d2ad1f213167",
+                "createdAt": 1625685804.176,
+                "message": "(service appinservice) (deployment ecs-svc/7362318186851046338) deployment completed."
+            },
+            {
+                "id": "d1fd52cd-1e2b-459f-bffc-809bb987b56b",
+                "createdAt": 1625685697.449,
+                "message": "(service appinservice) has stopped 1 running tasks: (task 02a5d973579f44e4a69a6ac1dcdd1a4d)."
+            },
+            {
+                "id": "7719f90f-89d6-4e97-bea7-c9f718a81516",
+                "createdAt": 1625685631.716,
+                "message": "(service appinservice) has started 1 tasks: (task ce78e17c8b294e9282cae13db53fc555)."
+            },
+            {
+                "id": "f8ec76b1-5a93-4913-860f-5973164d07dc",
+                "createdAt": 1625684343.938,
+                "message": "(service appinservice) has reached a steady state."
+            },
+            {
+                "id": "5b1493c9-34b2-4ed2-944e-b93919872f45",
+                "createdAt": 1625684343.937,
+                "message": "(service appinservice) (deployment ecs-svc/4245448863404811726) deployment completed."
+            },
+            {
+                "id": "bfd1c977-7462-42c3-8e75-e15b9e83bfb1",
+                "createdAt": 1625684237.19,
+                "message": "(service appinservice) has stopped 1 running tasks: (task 4cfbe072ae5a42058f4d13843755f7f1)."
+            },
+            {
+                "id": "6e79a0c6-feb3-45b3-8e50-a39c3878813f",
+                "createdAt": 1625684173.516,
+                "message": "(service appinservice) has started 1 tasks: (task 02a5d973579f44e4a69a6ac1dcdd1a4d)."
+            },
+            {
+                "id": "b403e673-d3b6-4c93-b80e-5df5f6cea10e",
+                "createdAt": 1625675170.366,
+                "message": "(service appinservice) has reached a steady state."
+            },
+            {
+                "id": "5f18afc5-0fe9-4037-a9f8-187a0548e1f1",
+                "createdAt": 1625675170.365,
+                "message": "(service appinservice) (deployment ecs-svc/1436256858808943500) deployment completed."
+            },
+            {
+                "id": "b1de6223-f630-45ce-a005-b7700e29ed9d",
+                "createdAt": 1625675147.441,
+                "message": "(service appinservice) has started 1 tasks: (task 4cfbe072ae5a42058f4d13843755f7f1)."
+            },
+            {
+                "id": "3dc9cac3-15a8-44c9-942c-07a439e245cb",
+                "createdAt": 1625663235.399,
+                "message": "(service appinservice) has reached a steady state."
+            },
+            {
+                "id": "8b3f3cc3-2d4d-4ace-9cba-a0b5ae347e67",
+                "createdAt": 1625641606.679,
+                "message": "(service appinservice) has reached a steady state."
+            },
+            {
+                "id": "06ddfe62-1c20-4ff1-9ed8-061862fb6eae",
+                "createdAt": 1625641596.962,
+                "message": "(service appinservice) has stopped 1 running tasks: (task 02b12d3ac43b43c6b5c62826f1e1e76c)."
+            },
+            {
+                "id": "d797178a-6478-4de7-bb98-3db2dac7d204",
+                "createdAt": 1625641491.778,
+                "message": "(service appinservice) has reached a steady state."
+            },
+            {
+                "id": "28bd1b85-df64-4954-bbbe-5a400a74bf82",
+                "createdAt": 1625641491.777,
+                "message": "(service appinservice) (deployment ecs-svc/6565636918053623062) deployment completed."
+            },
+            {
+                "id": "c934dc7a-7ad8-41cf-9e1b-11e616cd0c14",
+                "createdAt": 1625641460.673,
+                "message": "(service appinservice) has started 1 tasks: (task 02b12d3ac43b43c6b5c62826f1e1e76c)."
+            },
+            {
+                "id": "7bf3a8b1-5771-4b60-84a7-91c7e4714797",
+                "createdAt": 1625631545.866,
+                "message": "(service appinservice) has reached a steady state."
+            },
+            {
+                "id": "9556dfd4-2000-4c66-ad0f-80bd943138f8",
+                "createdAt": 1625631536.885,
+                "message": "(service appinservice) has stopped 1 running tasks: (task af1849a3c8dd4ec6bde5f1ef9679f2db)."
+            },
+            {
+                "id": "c4a0a11e-df97-4777-ada0-e161365ab4fb",
+                "createdAt": 1625629093.709,
+                "message": "(service appinservice) has reached a steady state."
+            },
+            {
+                "id": "a60a7ff2-ddea-4b7d-b9a8-2b0126ddf041",
+                "createdAt": 1625629093.708,
+                "message": "(service appinservice) (deployment ecs-svc/1321020543411084533) deployment completed."
+            },
+            {
+                "id": "95b5630a-d508-41d4-ad6d-13fba8f0a259",
+                "createdAt": 1625629070.879,
+                "message": "(service appinservice) has started 1 tasks: (task af1849a3c8dd4ec6bde5f1ef9679f2db)."
+            },
+            {
+                "id": "d94a2a29-30a1-4d6e-b3b8-7c9a1ed3e143",
+                "createdAt": 1625623125.805,
+                "message": "(service appinservice) has reached a steady state."
+            },
+            {
+                "id": "91a79ce2-cc9e-4048-88a0-4151daf2c5ec",
+                "createdAt": 1625601506.135,
+                "message": "(service appinservice) has reached a steady state."
+            },
+            {
+                "id": "506eca08-c71b-449d-8431-8a7bb79fa5c6",
+                "createdAt": 1625579875.118,
+                "message": "(service appinservice) has reached a steady state."
+            },
+            {
+                "id": "c23ad22c-252c-4122-8cee-7e3033104165",
+                "createdAt": 1625558257.0,
+                "message": "(service appinservice) has reached a steady state."
+            },
+            {
+                "id": "cbea120c-cf1e-4b7a-b593-1157b41f77fd",
+                "createdAt": 1625536632.403,
+                "message": "(service appinservice) has reached a steady state."
+            },
+            {
+                "id": "db828e68-f731-4c45-9b51-f2f72e7d4c01",
+                "createdAt": 1625536632.402,
+                "message": "(service appinservice) (deployment ecs-svc/0499992270428068581) deployment completed."
+            },
+            {
+                "id": "bf27b098-01bf-4326-a200-793b207d5f9c",
+                "createdAt": 1625536527.428,
+                "message": "(service appinservice) has stopped 1 running tasks: (task 989274fe3e694348a4b3a0fe513c9e70)."
+            },
+            {
+                "id": "ad3acf60-7b76-4929-b629-cfa0e7aa9486",
+                "createdAt": 1625536527.352,
+                "message": "(service appinservice) was unable to stop or start tasks during a deployment because of the service deployment configuration. Update the minimumHealthyPercent or maximumPercent value and try again."
+            },
+            {
+                "id": "8410fbe8-071a-4227-89a4-5aa12fee8c25",
+                "createdAt": 1625536515.768,
+                "message": "(service appinservice) has stopped 1 running tasks: (task b552ceda7b0847009612b400339818c9)."
+            },
+            {
+                "id": "0dcbf575-e476-47ce-9d0a-3a7ec106de3e",
+                "createdAt": 1625536515.724,
+                "message": "(service appinservice) was unable to stop or start tasks during a deployment because of the service deployment configuration. Update the minimumHealthyPercent or maximumPercent value and try again."
+            },
+            {
+                "id": "4dcb9f92-e793-4a3e-a7a9-54ddd6f689be",
+                "createdAt": 1625536463.663,
+                "message": "(service appinservice) has started 1 tasks: (task 989274fe3e694348a4b3a0fe513c9e70)."
+            },
+            {
+                "id": "d613d133-2d70-4a23-97c9-56b768135128",
+                "createdAt": 1625532964.899,
+                "message": "(service appinservice) has reached a steady state."
+            },
+            {
+                "id": "51af8645-bd01-4961-8a97-e8431af33883",
+                "createdAt": 1625532964.898,
+                "message": "(service appinservice) (deployment ecs-svc/7260483886811175144) deployment completed."
+            },
+            {
+                "id": "8b455eda-596a-443e-b3be-77311fbc6ec4",
+                "createdAt": 1625532859.73,
+                "message": "(service appinservice) has stopped 1 running tasks: (task 1382a271a5e54a2aa9e0e22483fee12f)."
+            },
+            {
+                "id": "a5369fc4-5236-49d5-b6d8-0f798bfbc11d",
+                "createdAt": 1625532773.172,
+                "message": "(service appinservice) has started 1 tasks: (task b552ceda7b0847009612b400339818c9)."
+            },
+            {
+                "id": "4538dd32-57b3-444a-97ab-f43df104d701",
+                "createdAt": 1625531158.522,
+                "message": "(service appinservice) has reached a steady state."
+            },
+            {
+                "id": "610d041a-12f3-415f-94d0-d6156f6899b5",
+                "createdAt": 1625531158.521,
+                "message": "(service appinservice) (deployment ecs-svc/1773587890142275512) deployment completed."
+            },
+            {
+                "id": "9b75a219-f85d-4d3e-876f-567d8cf5c88b",
+                "createdAt": 1625531054.23,
+                "message": "(service appinservice) has stopped 1 running tasks: (task 3a75d8f5ba2842d69066407cd7649ec8)."
+            },
+            {
+                "id": "62358f1c-6a69-4059-9e91-bbf0ead35852",
+                "createdAt": 1625530991.189,
+                "message": "(service appinservice) has started 1 tasks: (task 1382a271a5e54a2aa9e0e22483fee12f)."
+            },
+            {
+                "id": "8a1b9972-c020-4e8b-b7d2-b3b65bcb2529",
+                "createdAt": 1625530294.573,
+                "message": "(service appinservice) has reached a steady state."
+            },
+            {
+                "id": "a44e4429-fa5f-454a-96df-04daa8b47105",
+                "createdAt": 1625530294.572,
+                "message": "(service appinservice) (deployment ecs-svc/5691089072036904413) deployment completed."
+            }
+        ],
+        "createdAt": 1625252972.914,
+        "placementConstraints": [],
+        "placementStrategy": [],
+        "networkConfiguration": {
+            "awsvpcConfiguration": {
+                "subnets": [
+                    "subnet-eaa81381",
+                    "subnet-09c93874"
+                ],
+                "securityGroups": [
+                    "sg-0fe33bb1bc74e8fa9"
+                ],
+                "assignPublicIp": "ENABLED"
+            }
+        },
+        "schedulingStrategy": "REPLICA",
+        "createdBy": "arn:aws:iam::489994096722:user/abdullah",
+        "enableECSManagedTags": true,
+        "propagateTags": "NONE",
+        "enableExecuteCommand": false
+    }
+}
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Declarative: Post Actions)
+[Pipeline] script
+[Pipeline] {
+[Pipeline] slackSend
+Slack Send Pipeline step running, values are - baseUrl: <empty>, teamDomain: eurustechnologies, channel: U01SLG5TVQF, color: good, botUser: false, tokenCredentialId: slackid, notifyCommitters: false, iconEmoji: <empty>, username: <empty>, timestamp: <empty>
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+Finished: SUCCESS

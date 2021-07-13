@@ -2,16 +2,16 @@
 def app = 'Unknown'
 pipeline{
     // agent { label 'slave || slave-jnlpx' }
-    agent { label 'slave1' }
+    agent { label 'fargate-slave' }
     environment {
-        IMAGE_TAG="latest"
-        JOB_NAME = "Notify_Slack"
+        IMAGE_TAG="${env.BUILD_ID}"
+        JOB_NAME = "Notify_Slack:${env.BUILD_ID}"
         BRANCH_NAME = "Main"
         REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"  
     }
     parameters {
         string(name: 'ENVIRONMENT', defaultValue: 'DEV', description: 'Where should I deploy?')
-        string(name: 'service_name', defaultValue: 'app', description: 'Pick Service to Deploy')
+        string(name: 'service_name', defaultValue: 'appinservice', description: 'Pick Service to Deploy')
         text(name: 'AWS_DEFAULT_REGION', defaultValue: 'us-east-2', description: 'Enter region')
         text(name: 'AWS_ACCOUNT_ID', defaultValue: '489994096722', description: 'Enter id')
         text(name: 'IMAGE_REPO_NAME', defaultValue: 'abdullah_jenkins_ecr', description: 'Enter repo')
@@ -56,7 +56,7 @@ pipeline{
         stage("register Task defintion"){
             steps{
                 script {
-                    // sh "sed -i 's/%BUILD_ID%/${BUILD_ID}/g' task.json"
+                    sh "sed -i 's/%BUILD_ID%/${BUILD_ID}/g' task.json"
                     sh "aws ecs register-task-definition --cli-input-json file://task.json"
                 }
             }
