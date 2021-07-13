@@ -1,7 +1,7 @@
 #
 # BudgetTracker Dockerfile for UI 
 #
-FROM jenkins/inbound-agent:latest
+FROM ubuntu:latest
 MAINTAINER "abdullah@gmail.com"
 
 USER root
